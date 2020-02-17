@@ -18,10 +18,12 @@ const options = {
 	// userDataDir: './tmp'
 }
 const timeout = 3000
+const watch = `Chandler Moore`
 
 let browser
 let page
 let total = 0
+let previousVotes = 0
 const block = [
 	`image`,
 	`font`,
@@ -73,11 +75,11 @@ async function tick(){
 			timeout: 2000,
 		})
 
-		const score = await page.evaluate(() => {
-			const str = []
+		const scores = await page.evaluate(() => {
+			const scores = []
 			const els = document.querySelectorAll(`.pds-feedback-group`)
 			const msg = document.querySelector(`.pds-question-top`).textContent
-			str.push(msg)
+			scores.push(msg)
 			els.forEach(el => {
 				const name = el.querySelector(`.pds-answer-text`)
 					.textContent
@@ -86,15 +88,31 @@ async function tick(){
 					.textContent
 					.split(`(`)[1]
 					.split(`)`)[0]
-				str.push(`${name}: ${votes}`)
+				scores.push({
+					name,
+					votes,
+				})
 			})
-			return str.join(`\n`)
+			return scores
 		})
+
+		let str = []
+		scores.forEach(({ name, votes }) => {
+			if(!name) return
+			if(name === watch){
+				if (previousVotes === votes){
+					console.log(`\nNO CHANGE!\n`)
+				}
+				previousVotes = votes
+			}
+			str.push(`${name}: ${votes}`)
+		})
+		str = str.join(`\n`)
 
 		total++
 		const result = [
 			`Voted ${total} times`,
-			score,
+			str,
 		]
 
 		console.log(`\n${result.join(`\n`)}\n`)
