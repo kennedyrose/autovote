@@ -45,8 +45,29 @@ async function tick(){
 	console.log(`Waiting for results...`)
 	await page.waitForSelector(`.pds-feedback-group`)
 
+	const score = await page.evaluate(() => {
+		const str = []
+		const els = document.querySelectorAll(`.pds-feedback-group`)
+		els.forEach(el => {
+			const name = el.querySelector(`.pds-answer-text`)
+				.textContent
+				.split(`,`)[0]
+			const votes = el.querySelector(`.pds-feedback-votes`)
+				.textContent
+				.split(`(`)[1]
+				.split(`)`)[0]
+			str.push(`${name}: ${votes}`)
+		})
+		return str.join(`\n`)
+	})
+
+	const result = [
+		`Voted ${total} times`,
+		score,
+	]
+
 	total++
-	console.log(`Voted ${total} times`)
+	console.log(`\n${result.join(`\n`)}\n`)
 	tick()
 }
 function timer(n) {
