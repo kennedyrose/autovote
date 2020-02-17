@@ -20,13 +20,33 @@ const options = {
 let browser
 let page
 let total = 0
+const block = [
+	`image`,
+	`font`,
+	// `stylesheet`,
+]
 
 async function tick(){
+
+	// Launch browser
 	if(!browser){
 		console.log(`Launching browser...`)
 		browser = await puppeteer.launch(options)
-		page = await browser.newPage();
+		page = await browser.newPage()
+		await page.setRequestInterception(true)
+		page.on('request', request => {
+			const type = request.resourceType()
+
+			if (block.indexOf(type) > -1) {
+				request.abort()
+			}
+			else {
+				request.continue()
+			}
+		});
 	}
+
+
 	console.log(`Loading page...`)
 	await page.goto('https://www.courierpress.com/story/sports/high-school/polls/2020/02/17/who-your-turonis-high-school-athlete-week/4785043002/', {
 		waitUntil: 'networkidle2',
@@ -48,6 +68,8 @@ async function tick(){
 	const score = await page.evaluate(() => {
 		const str = []
 		const els = document.querySelectorAll(`.pds-feedback-group`)
+		const msg = document.querySelector(`.pds-question-top`).textContent
+		str.push(msg)
 		els.forEach(el => {
 			const name = el.querySelector(`.pds-answer-text`)
 				.textContent
@@ -61,13 +83,14 @@ async function tick(){
 		return str.join(`\n`)
 	})
 
+	total++
 	const result = [
 		`Voted ${total} times`,
 		score,
 	]
 
-	total++
 	console.log(`\n${result.join(`\n`)}\n`)
+	await timer(3000)
 	tick()
 }
 function timer(n) {

@@ -4,10 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "node index",
-    "start": "node index"
+    "dev": "npm run start",
+    "start": "node index.js"
   },
   "dependencies": {
+    "forever": "^2.0.0",
     "puppeteer": "^2.1.1"
   }
 }
