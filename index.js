@@ -1,4 +1,5 @@
 const puppeteer = require(`puppeteer`)
+const { getRandom } = require(`random-useragent`)
 
 const args = [
 	'--no-sandbox',
@@ -46,6 +47,8 @@ async function tick(){
 		});
 	}
 
+	console.log(`Generating random user agent...`)
+	await page.setUserAgent(getRandom())
 
 	console.log(`Loading page...`)
 	await page.goto('https://www.courierpress.com/story/sports/high-school/polls/2020/02/17/who-your-turonis-high-school-athlete-week/4785043002/', {

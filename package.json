@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "forever": "^2.0.0",
-    "puppeteer": "^2.1.1"
+    "puppeteer": "^2.1.1",
+    "random-useragent": "^0.3.1"
   }
 }
