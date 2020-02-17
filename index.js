@@ -13,7 +13,7 @@ const args = [
 
 const options = {
 	args,
-	headless: true,
+	headless: false,
 	// ignoreHTTPSErrors: true,
 	// userDataDir: './tmp'
 };
@@ -51,16 +51,15 @@ async function tick(){
 	await page.setUserAgent(getRandom())
 
 	console.log(`Loading page...`)
-	await page.goto('https://www.courierpress.com/story/sports/high-school/polls/2020/02/17/who-your-turonis-high-school-athlete-week/4785043002/', {
-		waitUntil: 'networkidle2',
-	})
+	page.goto('https://www.courierpress.com/story/sports/high-school/polls/2020/02/17/who-your-turonis-high-school-athlete-week/4785043002/')
+
 
 	console.log(`Looking for input...`)
-	await page.waitForSelector(`#PDI_answer48605260`)
+	await page.waitForSelector(`input#PDI_answer48605260`)
 
+	await timer(3000)
 	console.log(`Clicking input...`)
-	await timer(100)
-	await page.click(`#PDI_answer48605260`)
+	await page.click(`input#PDI_answer48605260`)
 
 	console.log(`Clicking submit button...`)
 	await page.click(`#pd-vote-button10507350`)
