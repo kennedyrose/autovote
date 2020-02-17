@@ -9,14 +9,15 @@ const args = [
 	'--ignore-certifcate-errors',
 	'--ignore-certifcate-errors-spki-list',
 	'--user-agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3312.0 Safari/537.36"'
-];
+]
 
 const options = {
 	args,
 	headless: true,
 	// ignoreHTTPSErrors: true,
 	// userDataDir: './tmp'
-};
+}
+const timeout = 3000
 
 let browser
 let page
@@ -105,7 +106,10 @@ async function tick(){
 		page = false
 	}
 
-
+	if (timeout){
+		console.log(`Waiting for ${timeout / 1000} seconds...`)
+		await timer(timeout)
+	}
 	tick()
 }
 function timer(n) {
