@@ -36,6 +36,7 @@ async function tick(){
 	await page.waitForSelector(`#PDI_answer48605260`)
 
 	console.log(`Clicking input...`)
+	await timer(100)
 	await page.click(`#PDI_answer48605260`)
 
 	console.log(`Clicking submit button...`)
