@@ -1,0 +1,13 @@
+{
+  "name": "clicker",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "node index",
+    "start": "node index"
+  },
+  "dependencies": {
+    "puppeteer": "^2.1.1"
+  }
+}
