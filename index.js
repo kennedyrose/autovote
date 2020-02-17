@@ -57,7 +57,9 @@ async function tick(){
 
 
 		console.log(`Looking for input...`)
-		await page.waitForSelector(`input#PDI_answer48605260`)
+		await page.waitForSelector(`input#PDI_answer48605260`, {
+			timeout: 2000,
+		})
 
 		console.log(`Clicking input...`)
 		await page.click(`input#PDI_answer48605260`)
@@ -66,7 +68,9 @@ async function tick(){
 		await page.click(`#pd-vote-button10507350`)
 
 		console.log(`Waiting for results...`)
-		await page.waitForSelector(`.pds-feedback-group`)
+		await page.waitForSelector(`.pds-feedback-group`, {
+			timeout: 2000,
+		})
 
 		const score = await page.evaluate(() => {
 			const str = []
@@ -96,6 +100,9 @@ async function tick(){
 	}
 	catch(err){
 		console.error(err)
+		await browser.close()
+		browser = false
+		page = false
 	}
 
 
