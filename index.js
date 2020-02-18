@@ -118,11 +118,20 @@ async function tick(){
 		str = str.join(`\n`)
 
 		total++
+
+		const toTop = res.scores[0].votes - previousVotes
+		let msg
+		if (!toTop) {
+			msg = `Votes to second spot: ${previousVotes - res.scores[1].votes}`
+		}
+		else {
+			msg = `Votes to top spot: ${toTop}`
+		}
+
 		const result = [
 			`Voted ${total} times`,
 			str,
-			`Votes to top spot: ${res.scores[0].votes - previousVotes}`,
-			`Votes to second spot: ${previousVotes - res.scores[1].votes}`,
+			msg,
 		]
 
 		console.log(`\n${result.join(`\n`)}\n`)
