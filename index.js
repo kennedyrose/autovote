@@ -75,9 +75,10 @@ async function tick(){
 			timeout: 2000,
 		})
 
-		const scores = await page.evaluate(() => {
+		const res = await page.evaluate(() => {
 			const scores = []
 			const els = document.querySelectorAll(`.pds-feedback-group`)
+			const msg = document.querySelector(`.pds-question-top`).textContent.trim()
 			els.forEach(el => {
 				const name = el.querySelector(`.pds-answer-text`)
 					.textContent
@@ -96,11 +97,16 @@ async function tick(){
 					})
 				}
 			})
-			return scores
+			return {
+				msg,
+				scores,
+			}
 		})
 
+		console.log(`Result: ${res.msg}`)
+
 		let str = []
-		scores.forEach(({ name, votes }) => {
+		res.scores.forEach(({ name, votes }) => {
 			if(name == watch){
 				if (previousVotes == votes){
 					console.log(`\nNO CHANGE!\n`)
@@ -115,8 +121,8 @@ async function tick(){
 		const result = [
 			`Voted ${total} times`,
 			str,
-			`Votes to top spot: ${scores[0].votes - previousVotes}`,
-			`Votes to second spot: ${previousVotes - scores[1].votes}`,
+			`Votes to top spot: ${res.scores[0].votes - previousVotes}`,
+			`Votes to second spot: ${previousVotes - res.scores[1].votes}`,
 		]
 
 		console.log(`\n${result.join(`\n`)}\n`)
