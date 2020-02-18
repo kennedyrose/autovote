@@ -111,8 +111,6 @@ async function tick(){
 		})
 		str = str.join(`\n`)
 
-		console.log(scores[0].votes, previousVotes)
-
 		total++
 		const result = [
 			`Voted ${total} times`,
