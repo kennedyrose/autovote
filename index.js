@@ -17,7 +17,7 @@ const options = {
 	// ignoreHTTPSErrors: true,
 	// userDataDir: './tmp'
 }
-const timeout = 5000
+const timeout = 4000
 const watch = `Chandler Moore`
 
 let browser
@@ -61,7 +61,7 @@ async function tick(){
 
 		console.log(`Looking for input...`)
 		await page.waitForSelector(`input#PDI_answer48605260`, {
-			timeout: 5000,
+			timeout: 6000,
 		})
 
 		console.log(`Clicking input...`)
@@ -116,6 +116,7 @@ async function tick(){
 			`Voted ${total} times`,
 			str,
 			`Votes to top spot: ${scores[0].votes - previousVotes}`,
+			`Votes to second spot: ${previousVotes - scores[1].votes}`,
 		]
 
 		console.log(`\n${result.join(`\n`)}\n`)
