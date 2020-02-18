@@ -78,29 +78,31 @@ async function tick(){
 		const scores = await page.evaluate(() => {
 			const scores = []
 			const els = document.querySelectorAll(`.pds-feedback-group`)
-			const msg = document.querySelector(`.pds-question-top`).textContent
-			scores.push(msg)
 			els.forEach(el => {
 				const name = el.querySelector(`.pds-answer-text`)
 					.textContent
 					.split(`,`)[0]
-				const votes = el.querySelector(`.pds-feedback-votes`)
+					.trim()
+				let votes = el.querySelector(`.pds-feedback-votes`)
 					.textContent
 					.split(`(`)[1]
 					.split(`)`)[0]
-				scores.push({
-					name,
-					votes,
-				})
+					.split(` `)[0]
+				votes = parseInt(votes.replace(/,/g, ``))
+				if (name) {
+					scores.push({
+						name,
+						votes,
+					})
+				}
 			})
 			return scores
 		})
 
 		let str = []
 		scores.forEach(({ name, votes }) => {
-			if(!name) return
-			if(name === watch){
-				if (previousVotes === votes){
+			if(name == watch){
+				if (previousVotes == votes){
 					console.log(`\nNO CHANGE!\n`)
 				}
 				previousVotes = votes
@@ -109,10 +111,13 @@ async function tick(){
 		})
 		str = str.join(`\n`)
 
+		console.log(scores[0].votes, previousVotes)
+
 		total++
 		const result = [
 			`Voted ${total} times`,
 			str,
+			`Votes to top spot: ${scores[0].votes - previousVotes}`,
 		]
 
 		console.log(`\n${result.join(`\n`)}\n`)
