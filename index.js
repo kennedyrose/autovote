@@ -17,7 +17,7 @@ const options = {
 	// ignoreHTTPSErrors: true,
 	// userDataDir: './tmp'
 }
-const timeout = 4000
+const timeout = 4500
 const watch = `Chandler Moore`
 
 let browser
